@@ -1,0 +1,802 @@
+[
+    {
+        "name": "Gmenudbusmenuproxy",
+        "pid": "3883",
+        "exe": "/usr/bin/gmenudbusmenuproxy",
+        "state": "",
+        "inode_count": 5,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Firefox",
+        "pid": "47482",
+        "exe": "/snap/firefox/4650/usr/lib/firefox/firefox",
+        "state": "",
+        "inode_count": 5,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Kwin_x11",
+        "pid": "3804",
+        "exe": "/usr/bin/kwin_x11",
+        "state": "",
+        "inode_count": 10,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Firefox",
+        "pid": "44599",
+        "exe": "/snap/firefox/4650/usr/lib/firefox/firefox",
+        "state": "",
+        "inode_count": 5,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Code",
+        "pid": "17338",
+        "exe": "/usr/share/code/code",
+        "state": "",
+        "inode_count": 12,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Code",
+        "pid": "17943",
+        "exe": "/usr/share/code/code",
+        "state": "",
+        "inode_count": 9,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Code",
+        "pid": "17300",
+        "exe": "/usr/share/code/code",
+        "state": "",
+        "inode_count": 2,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Xdg-Document-Portal",
+        "pid": "3459",
+        "exe": "/usr/libexec/xdg-document-portal",
+        "state": "",
+        "inode_count": 2,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Firefox",
+        "pid": "74360",
+        "exe": "/snap/firefox/4650/usr/lib/firefox/firefox",
+        "state": "",
+        "inode_count": 5,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Xdg-Desktop-Portal-Gnome",
+        "pid": "3726",
+        "exe": "/usr/libexec/xdg-desktop-portal-gnome",
+        "state": "",
+        "inode_count": 6,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Teams",
+        "pid": "6953",
+        "exe": "/usr/share/teams/teams",
+        "state": "",
+        "inode_count": 4,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "At-Spi2-Registryd",
+        "pid": "3716",
+        "exe": "/usr/libexec/at-spi2-registryd",
+        "state": "",
+        "inode_count": 3,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Kioslave5",
+        "pid": "9853",
+        "exe": "/usr/lib/x86_64-linux-gnu/libexec/kf5/kioslave5",
+        "state": "",
+        "inode_count": 1,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Firefox",
+        "pid": "66074",
+        "exe": "/snap/firefox/4650/usr/lib/firefox/firefox",
+        "state": "",
+        "inode_count": 5,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Teams",
+        "pid": "4661",
+        "exe": "/usr/share/teams/teams",
+        "state": "",
+        "inode_count": 9,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Ibus-Engine-Simple",
+        "pid": "3728",
+        "exe": "/usr/libexec/ibus-engine-simple",
+        "state": "",
+        "inode_count": 2,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Code",
+        "pid": "17389",
+        "exe": "/usr/share/code/code",
+        "state": "",
+        "inode_count": 12,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Kglobalaccel5",
+        "pid": "3825",
+        "exe": "/usr/bin/kglobalaccel5",
+        "state": "",
+        "inode_count": 4,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Gnome-Keyring-Daemon",
+        "pid": "3788",
+        "exe": "/usr/bin/gnome-keyring-daemon",
+        "state": "",
+        "inode_count": 1,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Akonadi_migration_agent",
+        "pid": "4091",
+        "exe": "/usr/bin/akonadi_migration_agent",
+        "state": "",
+        "inode_count": 6,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Teams",
+        "pid": "4360",
+        "exe": "/usr/share/teams/teams",
+        "state": "",
+        "inode_count": 37,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Akonadi_maildir_resource",
+        "pid": "4087",
+        "exe": "/usr/bin/akonadi_maildir_resource",
+        "state": "",
+        "inode_count": 6,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Ibus-Portal",
+        "pid": "3695",
+        "exe": "/usr/libexec/ibus-portal",
+        "state": "",
+        "inode_count": 2,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Firefox",
+        "pid": "4828",
+        "exe": "/snap/firefox/4650/usr/lib/firefox/firefox",
+        "state": "",
+        "inode_count": 5,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Obexd",
+        "pid": "4055",
+        "exe": "/usr/lib/bluetooth/obexd",
+        "state": "",
+        "inode_count": 3,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Firefox",
+        "pid": "20641",
+        "exe": "/snap/firefox/4650/usr/lib/firefox/firefox",
+        "state": "",
+        "inode_count": 5,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Firefox",
+        "pid": "28764",
+        "exe": "/snap/firefox/4650/usr/lib/firefox/firefox",
+        "state": "",
+        "inode_count": 5,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Teams",
+        "pid": "4698",
+        "exe": "/usr/share/teams/teams",
+        "state": "",
+        "inode_count": 10,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Kdeconnectd",
+        "pid": "3884",
+        "exe": "/usr/lib/x86_64-linux-gnu/libexec/kdeconnectd",
+        "state": "",
+        "inode_count": 8,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Firefox",
+        "pid": "5072",
+        "exe": "/snap/firefox/4650/usr/lib/firefox/firefox",
+        "state": "",
+        "inode_count": 5,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Teams",
+        "pid": "4691",
+        "exe": "/usr/share/teams/teams",
+        "state": "",
+        "inode_count": 9,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Kdeinit5",
+        "pid": "3775",
+        "exe": "/usr/bin/kdeinit5",
+        "state": "",
+        "inode_count": 3,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Firefox",
+        "pid": "46460",
+        "exe": "/snap/firefox/4650/usr/lib/firefox/firefox",
+        "state": "",
+        "inode_count": 5,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Kioslave5",
+        "pid": "4675",
+        "exe": "/usr/lib/x86_64-linux-gnu/libexec/kf5/kioslave5",
+        "state": "",
+        "inode_count": 1,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Kded5",
+        "pid": "3801",
+        "exe": "/usr/bin/kded5",
+        "state": "",
+        "inode_count": 12,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Agent",
+        "pid": "4365",
+        "exe": "/usr/libexec/geoclue-2.0/demos/agent",
+        "state": "",
+        "inode_count": 1,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Ksmserver",
+        "pid": "3824",
+        "exe": "/usr/bin/ksmserver",
+        "state": "",
+        "inode_count": 26,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Xdg-Desktop-Portal",
+        "pid": "3719",
+        "exe": "/usr/libexec/xdg-desktop-portal",
+        "state": "",
+        "inode_count": 5,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Firefox",
+        "pid": "66037",
+        "exe": "/snap/firefox/4650/usr/lib/firefox/firefox",
+        "state": "",
+        "inode_count": 5,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Systemd",
+        "pid": "3424",
+        "exe": "/usr/lib/systemd/systemd",
+        "state": "",
+        "inode_count": 19,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Akonadi_akonotes_resource",
+        "pid": "4080",
+        "exe": "/usr/bin/akonadi_akonotes_resource",
+        "state": "",
+        "inode_count": 6,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Snapd-Desktop-Integration",
+        "pid": "4151",
+        "exe": "/snap/snapd-desktop-integration/157/usr/bin/snapd-desktop-integration",
+        "state": "",
+        "inode_count": 7,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Firefox",
+        "pid": "5171",
+        "exe": "/snap/firefox/4650/usr/lib/firefox/firefox",
+        "state": "",
+        "inode_count": 5,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Snap",
+        "pid": "4721",
+        "exe": "/usr/bin/snap",
+        "state": "",
+        "inode_count": 1,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Firefox",
+        "pid": "66848",
+        "exe": "/snap/firefox/4650/usr/lib/firefox/firefox",
+        "state": "",
+        "inode_count": 5,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Code",
+        "pid": "17448",
+        "exe": "/usr/share/code/code",
+        "state": "",
+        "inode_count": 9,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Teams",
+        "pid": "4782",
+        "exe": "/usr/share/teams/teams",
+        "state": "",
+        "inode_count": 9,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Evolution-Source-Registry",
+        "pid": "4411",
+        "exe": "/usr/libexec/evolution-source-registry",
+        "state": "",
+        "inode_count": 1,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "At-Spi-Bus-Launcher",
+        "pid": "3701",
+        "exe": "/usr/libexec/at-spi-bus-launcher",
+        "state": "",
+        "inode_count": 1,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    },
+    {
+        "name": "Akonadi_contacts_resource",
+        "pid": "4083",
+        "exe": "/usr/bin/akonadi_contacts_resource",
+        "state": "",
+        "inode_count": 6,
+        "traffic_stats": {
+            "in": 0,
+            "out": 0,
+            "in_rate": 0,
+            "out_rate": 0,
+            "input_ewma": 0,
+            "output_ewma": 0
+        },
+        "ring": null
+    }
+]
