@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/prometheus/procfs"
-	"github.com/reiver/go-cast"
 )
 
 // func Test() {
@@ -103,26 +102,26 @@ type ProcStat struct {
 	Comm                string `parquet:"name=comm, type=BYTE_ARRAY, convertedtype=UTF8, encoding=PLAIN_DICTIONARY"`
 	State               string `parquet:"name=state, type=BYTE_ARRAY, convertedtype=UTF8, encoding=PLAIN_DICTIONARY"`
 	Session             int    `parquet:"name=session, type=INT32"`
-	Flags               int    `parquet:"name=flags, type=INT32, convertedtype=UINT_32"`
-	MinFlt              int    `parquet:"name=minflt, type=INT32, convertedtype=UINT_32"`
-	CMinFlt             int    `parquet:"name=cminflt, type=INT32, convertedtype=UINT_32"`
-	MajFlt              int    `parquet:"name=majflt, type=INT32, convertedtype=UINT_32"`
-	CMajFlt             int    `parquet:"name=cmajflt, type=INT32, convertedtype=UINT_32"`
-	UTime               int    `parquet:"name=utime, type=INT32, convertedtype=UINT_32"`
-	STime               int    `parquet:"name=stime, type=INT32, convertedtype=UINT_32"`
+	Flags               uint   `parquet:"name=flags, type=INT32, convertedtype=UINT_32"`
+	MinFlt              uint   `parquet:"name=minflt, type=INT32, convertedtype=UINT_32"`
+	CMinFlt             uint   `parquet:"name=cminflt, type=INT32, convertedtype=UINT_32"`
+	MajFlt              uint   `parquet:"name=majflt, type=INT32, convertedtype=UINT_32"`
+	CMajFlt             uint   `parquet:"name=cmajflt, type=INT32, convertedtype=UINT_32"`
+	UTime               uint   `parquet:"name=utime, type=INT32, convertedtype=UINT_32"`
+	STime               uint   `parquet:"name=stime, type=INT32, convertedtype=UINT_32"`
 	CUTime              int    `parquet:"name=cutime, type=INT32"`
 	CSTime              int    `parquet:"name=cstime, type=INT32"`
 	Priority            int    `parquet:"name=priority, type=INT32"`
 	Nice                int    `parquet:"name=nice, type=INT32"`
 	NumThreads          int    `parquet:"name=numthreads, type=INT32"`
-	Starttime           int64  `parquet:"name=starttime, type=INT64, convertedtype=UINT_64"`
-	VSize               int    `parquet:"name=vsize, type=INT32, convertedtype=UINT_32"`
+	Starttime           uint64 `parquet:"name=starttime, type=INT64, convertedtype=UINT_64"`
+	VSize               uint   `parquet:"name=vsize, type=INT32, convertedtype=UINT_32"`
 	RSS                 int    `parquet:"name=rss, type=INT32"`
-	RSSLimit            int64  `parquet:"name=rsslimit, type=INT64, convertedtype=UINT_64"`
-	Processor           int    `parquet:"name=processor, type=INT32, convertedtype=UINT_32"`
-	RTPriority          int    `parquet:"name=rtpriority, type=INT32, convertedtype=UINT_32"`
-	Policy              int    `parquet:"name=policy, type=INT32, convertedtype=UINT_32"`
-	DelayAcctBlkIOTicks int64  `parquet:"name=delayacctblkioticks, type=INT64, convertedtype=UINT_64"`
+	RSSLimit            uint64 `parquet:"name=rsslimit, type=INT64, convertedtype=UINT_64"`
+	Processor           uint   `parquet:"name=processor, type=INT32, convertedtype=UINT_32"`
+	RTPriority          uint   `parquet:"name=rtpriority, type=INT32, convertedtype=UINT_32"`
+	Policy              uint   `parquet:"name=policy, type=INT32, convertedtype=UINT_32"`
+	DelayAcctBlkIOTicks uint64 `parquet:"name=delayacctblkioticks, type=INT64, convertedtype=UINT_64"`
 	GuestTime           int    `parquet:"name=guesttime, type=INT32"`
 	CGuestTime          int    `parquet:"name=cguesttime, type=INT32"`
 }
@@ -134,26 +133,26 @@ func transform(m message) *ParquetMessage {
 			Comm:                m.ProcStat.Comm,
 			State:               m.ProcStat.State,
 			Session:             m.ProcStat.Session,
-			Flags:               cast.MustInt(m.ProcStat.Flags),
-			MinFlt:              cast.MustInt(m.ProcStat.MinFlt),
-			CMinFlt:             cast.MustInt(m.ProcStat.CMinFlt),
-			MajFlt:              cast.MustInt(m.ProcStat.MajFlt),
-			CMajFlt:             cast.MustInt(m.ProcStat.CMajFlt),
-			UTime:               cast.MustInt(m.ProcStat.UTime),
-			STime:               cast.MustInt(m.ProcStat.STime),
+			Flags:               m.ProcStat.Flags,
+			MinFlt:              m.ProcStat.MinFlt,
+			CMinFlt:             m.ProcStat.CMinFlt,
+			MajFlt:              m.ProcStat.MajFlt,
+			CMajFlt:             m.ProcStat.CMajFlt,
+			UTime:               m.ProcStat.UTime,
+			STime:               m.ProcStat.STime,
 			CUTime:              m.ProcStat.CUTime,
 			CSTime:              m.ProcStat.CSTime,
 			Priority:            m.ProcStat.Priority,
 			Nice:                m.ProcStat.Nice,
 			NumThreads:          m.ProcStat.NumThreads,
-			Starttime:           cast.MustInt64(m.ProcStat.Starttime),
-			VSize:               cast.MustInt(m.ProcStat.VSize),
+			Starttime:           m.ProcStat.Starttime,
+			VSize:               m.ProcStat.VSize,
 			RSS:                 m.ProcStat.RSS,
-			RSSLimit:            cast.MustInt64(m.ProcStat.RSSLimit),
-			Processor:           cast.MustInt(m.ProcStat.Processor),
-			RTPriority:          cast.MustInt(m.ProcStat.RTPriority),
-			Policy:              cast.MustInt(m.ProcStat.Policy),
-			DelayAcctBlkIOTicks: cast.MustInt64(m.ProcStat.DelayAcctBlkIOTicks),
+			RSSLimit:            m.ProcStat.RSSLimit,
+			Processor:           m.ProcStat.Processor,
+			RTPriority:          m.ProcStat.RTPriority,
+			Policy:              m.ProcStat.Policy,
+			DelayAcctBlkIOTicks: m.ProcStat.DelayAcctBlkIOTicks,
 			GuestTime:           m.ProcStat.GuestTime,
 			CGuestTime:          m.ProcStat.CGuestTime,
 		},
