@@ -2,10 +2,8 @@ package main
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"log"
 	"os"
-	"strings"
 	"testing"
 )
 
@@ -101,23 +99,6 @@ func TestParquetFromMemdump(t *testing.T) {
 
 }
 
-func listFiles(folder string) []string {
-	files, err := ioutil.ReadDir(folder)
-	if err != nil {
-		log.Fatal(err)
-	}
-	memdumps := make([]string, 0)
-	for _, file := range files {
-		if !file.IsDir() {
-			if strings.Contains(file.Name(), ".memdump") {
-				memdump := folder + "/" + file.Name()
-				memdumps = append(memdumps, memdump)
-			}
-		}
-
-	}
-	return memdumps
-}
 func TestConverter(t *testing.T) {
 	memdumps := listFiles(".")
 	for _, memdump := range memdumps {

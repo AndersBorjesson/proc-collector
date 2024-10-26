@@ -9,6 +9,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/AndersBorjesson/snifferlib"
 	"github.com/prometheus/procfs"
 )
 
@@ -46,8 +47,10 @@ import (
 // 	fmt.Println(string(bs))
 
 // }
-func main() {
 
+func Collect() {
+	// ConvertMemdump2Json()
+	// os.Exit(0)
 	// parse("testout.log")
 	// os.Exit(0)
 	// Test()
@@ -56,7 +59,7 @@ func main() {
 	comm := NewComm()
 	measure := NewMeasure(comm)
 	// l := NewLogger[ParquetMessage](".", 5000, 10)
-	l := NewDumper(".", 5000)
+	l := NewDumper(".", 50000)
 	l.Start()
 	defer l.Stop()
 	// a, _ := reflector.Reflect(&message{})
@@ -64,10 +67,35 @@ func main() {
 	// os.Exit(0)
 	go measure.Start()
 	go trigger(comm)
-	go Recieve(comm, l)
+	go Recieve(comm, &l)
 	done := make(chan bool, 1)
 	waitSig(done)
 	<-done
+}
+
+func Sniff() {
+	A := snifferlib.NewSnifferLib()
+	defer A.Close()
+	b := A.GetStats()
+	fmt.Println(b)
+	// Collect()
+	time.Sleep(2 * time.Second)
+	b = A.GetStats()
+	fmt.Println(b)
+}
+func main() {
+	a := NewMeasure(NewComm())
+	a2, _ := a.FS.AllProcs()
+	for _, l1 := range a2 {
+		// tmp, err := l1.IO()
+		// tmp, err := l1.Schedstat()
+		tmp, err := l1.NewStatus()
+
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println(tmp)
+	}
 }
 func serialize(m message) {
 	enc := json.NewEncoder(os.Stdout)
@@ -79,14 +107,14 @@ func serialize(m message) {
 	fmt.Println("datagram>>", "<<datagram")
 }
 
-func Recieve(c Comm, l Dumper) {
+func Recieve(c Comm, l *Dumper) {
 
 	for true {
 		a := <-c.datagram
 		// fmt.Println(a.Type, a.Time)
 		// fmt.Println(a.ProcStat)
 		// fmt.Println("Recieved")
-		l.AddLog(transform(a))
+		(*l).AddLog(transform(a))
 		// transform(a)
 	}
 }
