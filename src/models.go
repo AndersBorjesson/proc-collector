@@ -1,33 +1,39 @@
 package main
 
-import "github.com/prometheus/procfs"
+import (
+	"github.com/AndersBorjesson/snifferlib"
+	"github.com/prometheus/procfs"
+)
 
 type message struct {
-	Type          int
-	Time          int64
-	ProcStat      procfs.ProcStat
-	Procs         procfs.Procs
-	ProcStatus    procfs.ProcStatus
-	ProcIO        procfs.ProcIO
-	ProcSchedstat procfs.ProcSchedstat
+	Type           int
+	Time           int64
+	ProcStat       procfs.ProcStat
+	ProcStatus     procfs.ProcStatus
+	ProcIO         procfs.ProcIO
+	ProcSchedstat  procfs.ProcSchedstat
+	ConnectionData snifferlib.ConnectionData
 }
 type Comm struct {
 	measFS   chan bool
+	measNet  chan bool
 	datagram chan message
 }
 
 func NewComm() Comm {
 	return Comm{measFS: make(chan bool),
-		datagram: make(chan message, 1000)}
+		datagram: make(chan message, 1000),
+		measNet:  make(chan bool)}
 }
 
 type ParquetMessage struct {
-	Type          int           `parquet:"name=type, type=INT32"`
-	Time          int64         `parquet:"name=time, type=INT64"`
-	ProcStat      ProcStat      `parquet:"name=procstat, type=STRUCT"`
-	ProcIO        ProcIO        `parquet:"name=procio, type=STRUCT"`
-	ProcStatus    ProcStatus    `parquet:"name=procstatus, type=STRUCT"`
-	ProcSchedstat ProcSchedstat `parquet:"name=procschedstat, type=STRUCT"`
+	Type           int                       `parquet:"name=type, type=INT32"`
+	Time           int64                     `parquet:"name=time, type=INT64"`
+	ProcStat       ProcStat                  `parquet:"name=procstat, type=STRUCT"`
+	ProcIO         ProcIO                    `parquet:"name=procio, type=STRUCT"`
+	ProcStatus     ProcStatus                `parquet:"name=procstatus, type=STRUCT"`
+	ProcSchedstat  ProcSchedstat             `parquet:"name=procschedstat, type=STRUCT"`
+	ConnectionData snifferlib.ConnectionData `parquet:"name=connectiondata, type=STRUCT"`
 }
 
 type ProcStat struct {

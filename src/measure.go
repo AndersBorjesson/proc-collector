@@ -22,9 +22,6 @@ func NewMeasure(c Comm) Measure {
 		comm: c}
 }
 
-// tmp, err := l1.IO()
-// tmp, err := l1.Schedstat()
-// tmp, err := l1.NewStatus()
 func PIO(pid procfs.Proc) procfs.ProcIO {
 	tmp, err := pid.IO()
 	if err != nil {

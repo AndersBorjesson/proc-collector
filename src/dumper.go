@@ -61,6 +61,9 @@ func (d *Dumper) Size() {
 func (d *Dumper) AddLog(data *ParquetMessage) {
 	// memdump.Encode(&d.buffer, data)
 	d.data = append(d.data, *data)
+	if len(d.data)%1000 == 0 {
+		log.Println("Buffer length is ", len(d.data))
+	}
 	if len(d.data) > d.bufferlen {
 		d.Flush()
 	}
