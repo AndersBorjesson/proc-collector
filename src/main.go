@@ -10,11 +10,50 @@ import (
 	"time"
 
 	"github.com/AndersBorjesson/snifferlib"
-	"github.com/prometheus/procfs"
 )
 
-func Collect(parseFsFreq int64) {
+// func Test() {
+// 	nf, err := netflow.New(
+// 		netflow.WithCaptureTimeout(5 * time.Second),
+// 	)
+// 	if err != nil {
+// 		panic(err)
+// 	}
 
+// 	err = nf.Start()
+// 	if err != nil {
+// 		panic(err)
+// 	}
+// 	defer nf.Stop()
+
+// 	<-nf.Done()
+
+// 	var (
+// 		limit     = 50
+// 		recentSec = 5
+// 	)
+
+// 	rank, err := nf.GetProcessRank(limit, recentSec)
+// 	if err != nil {
+// 		panic(err)
+// 	}
+
+// 	bs, err := json.MarshalIndent(rank, "", "    ")
+// 	if err != nil {
+// 		panic(err)
+// 	}
+
+// 	fmt.Println(string(bs))
+
+// }
+
+func Collect(collectProcFsFreq int64) {
+	// ConvertMemdump2Json()
+	// os.Exit(0)
+	// parse("testout.log")
+	// os.Exit(0)
+	// Test()
+	// os.Exit(0)
 	defer fmt.Println("Defferd")
 	comm := NewComm()
 	measure := NewMeasure(comm)
@@ -22,9 +61,11 @@ func Collect(parseFsFreq int64) {
 	l := NewDumper(".", 50000)
 	l.Start()
 	defer l.Stop()
-
+	// a, _ := reflector.Reflect(&message{})
+	// fmt.Println(a)
+	// os.Exit(0)
 	go measure.Start()
-	go trigger(comm.measFS, parseFsFreq)
+	go trigger(comm)
 	go Recieve(comm, &l)
 	done := make(chan bool, 1)
 	waitSig(done)
@@ -42,7 +83,9 @@ func Sniff() {
 	fmt.Println(b)
 }
 func main() {
+
 	flagParse()
+
 }
 func serialize(m message) {
 	enc := json.NewEncoder(os.Stdout)
@@ -64,41 +107,6 @@ func Recieve(c Comm, l *Dumper) {
 		(*l).AddLog(transform(a))
 		// transform(a)
 	}
-}
-
-type ParquetMessage struct {
-	Type     int      `parquet:"name=type, type=INT32"`
-	Time     int64    `parquet:"name=time, type=INT64"`
-	ProcStat ProcStat `parquet:"name=procstat, type=STRUCT"`
-}
-
-type ProcStat struct {
-	PID                 int    `parquet:"name=pid, type=INT32"`
-	Comm                string `parquet:"name=comm, type=BYTE_ARRAY, convertedtype=UTF8, encoding=PLAIN_DICTIONARY"`
-	State               string `parquet:"name=state, type=BYTE_ARRAY, convertedtype=UTF8, encoding=PLAIN_DICTIONARY"`
-	Session             int    `parquet:"name=session, type=INT32"`
-	Flags               uint   `parquet:"name=flags, type=INT32, convertedtype=UINT_32"`
-	MinFlt              uint   `parquet:"name=minflt, type=INT32, convertedtype=UINT_32"`
-	CMinFlt             uint   `parquet:"name=cminflt, type=INT32, convertedtype=UINT_32"`
-	MajFlt              uint   `parquet:"name=majflt, type=INT32, convertedtype=UINT_32"`
-	CMajFlt             uint   `parquet:"name=cmajflt, type=INT32, convertedtype=UINT_32"`
-	UTime               uint   `parquet:"name=utime, type=INT32, convertedtype=UINT_32"`
-	STime               uint   `parquet:"name=stime, type=INT32, convertedtype=UINT_32"`
-	CUTime              int    `parquet:"name=cutime, type=INT32"`
-	CSTime              int    `parquet:"name=cstime, type=INT32"`
-	Priority            int    `parquet:"name=priority, type=INT32"`
-	Nice                int    `parquet:"name=nice, type=INT32"`
-	NumThreads          int    `parquet:"name=numthreads, type=INT32"`
-	Starttime           uint64 `parquet:"name=starttime, type=INT64, convertedtype=UINT_64"`
-	VSize               uint   `parquet:"name=vsize, type=INT32, convertedtype=UINT_32"`
-	RSS                 int    `parquet:"name=rss, type=INT32"`
-	RSSLimit            uint64 `parquet:"name=rsslimit, type=INT64, convertedtype=UINT_64"`
-	Processor           uint   `parquet:"name=processor, type=INT32, convertedtype=UINT_32"`
-	RTPriority          uint   `parquet:"name=rtpriority, type=INT32, convertedtype=UINT_32"`
-	Policy              uint   `parquet:"name=policy, type=INT32, convertedtype=UINT_32"`
-	DelayAcctBlkIOTicks uint64 `parquet:"name=delayacctblkioticks, type=INT64, convertedtype=UINT_64"`
-	GuestTime           int    `parquet:"name=guesttime, type=INT32"`
-	CGuestTime          int    `parquet:"name=cguesttime, type=INT32"`
 }
 
 func transform(m message) *ParquetMessage {
@@ -131,16 +139,58 @@ func transform(m message) *ParquetMessage {
 			GuestTime:           m.ProcStat.GuestTime,
 			CGuestTime:          m.ProcStat.CGuestTime,
 		},
+		ProcStatus: ProcStatus{
+			PID:                      m.ProcStatus.PID,
+			Name:                     m.ProcStatus.Name,
+			TGID:                     m.ProcStatus.TGID,
+			NSpids:                   m.ProcStatus.NSpids,
+			VmPeak:                   m.ProcStatus.VmPeak,
+			VmSize:                   m.ProcStatus.VmSize,
+			VmLck:                    m.ProcStatus.VmLck,
+			VmPin:                    m.ProcStatus.VmPin,
+			VmHWM:                    m.ProcStatus.VmHWM,
+			VmRSS:                    m.ProcStatus.VmRSS,
+			RssAnon:                  m.ProcStatus.RssAnon,
+			RssFile:                  m.ProcStatus.RssFile,
+			RssShmem:                 m.ProcStatus.RssShmem,
+			VmData:                   m.ProcStatus.VmData,
+			VmStk:                    m.ProcStatus.VmStk,
+			VmExe:                    m.ProcStatus.VmExe,
+			VmLib:                    m.ProcStatus.VmLib,
+			VmPTE:                    m.ProcStatus.VmPTE,
+			VmPMD:                    m.ProcStatus.VmPMD,
+			VmSwap:                   m.ProcStatus.VmSwap,
+			HugetlbPages:             m.ProcStatus.HugetlbPages,
+			VoluntaryCtxtSwitches:    m.ProcStatus.VoluntaryCtxtSwitches,
+			NonVoluntaryCtxtSwitches: m.ProcStatus.NonVoluntaryCtxtSwitches,
+			UIDs:                     m.ProcStatus.UIDs,
+			GIDs:                     m.ProcStatus.GIDs,
+			CpusAllowedList:          m.ProcStatus.CpusAllowedList,
+		},
+		ProcIO: ProcIO{
+			RChar:               m.ProcIO.RChar,
+			WChar:               m.ProcIO.WChar,
+			SyscR:               m.ProcIO.SyscR,
+			SyscW:               m.ProcIO.SyscW,
+			ReadBytes:           m.ProcIO.ReadBytes,
+			WriteBytes:          m.ProcIO.WriteBytes,
+			CancelledWriteBytes: m.ProcIO.CancelledWriteBytes,
+		},
+		ProcSchedstat: ProcSchedstat{
+			RunningNanoseconds: m.ProcSchedstat.RunningNanoseconds,
+			WaitingNanoseconds: m.ProcSchedstat.WaitingNanoseconds,
+			RunTimeslices:      m.ProcSchedstat.RunTimeslices,
+		},
 	}
 	return &tmp
 }
-func trigger(c chan bool, parseFsFreq int64) {
+func trigger(c Comm) {
 	//works
 	for true {
 		fmt.Println("triggering")
 
-		time.Sleep(time.Duration(parseFsFreq) * time.Millisecond)
-		c <- true
+		time.Sleep(500 * time.Millisecond)
+		c.measFS <- true
 	}
 }
 
@@ -156,33 +206,4 @@ func waitSig(done chan bool) {
 		fmt.Println(sig)
 		done <- true
 	}()
-}
-
-type Measure struct {
-	FS   procfs.FS
-	comm Comm
-}
-
-func NewMeasure(c Comm) Measure {
-	FS, err := procfs.NewDefaultFS()
-	if err != nil {
-		fmt.Println(err)
-	}
-	return Measure{FS: FS,
-		comm: c}
-}
-
-func (s *Measure) Start() {
-	for true {
-		<-s.comm.measFS
-		a, _ := s.FS.AllProcs()
-		for _, l1 := range a {
-			tmp, _ := l1.Stat()
-			datagram := message{Type: 1,
-				Time:     time.Now().UnixMilli(),
-				ProcStat: tmp}
-			s.comm.datagram <- datagram
-
-		}
-	}
 }
