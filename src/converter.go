@@ -26,8 +26,8 @@ func listFiles(folder string) []string {
 	return memdumps
 }
 
-func ConvertMemdump2Json() {
-	memdumps := listFiles(".")
+func ConvertMemdump2Json(path string) {
+	memdumps := listFiles(path)
 	for _, memdump := range memdumps {
 		Dumper := NewDumperFromFile(memdump)
 		defer Dumper.Close()

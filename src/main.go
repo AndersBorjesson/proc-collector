@@ -48,25 +48,18 @@ import (
 
 // }
 
-func Collect() {
-	// ConvertMemdump2Json()
-	// os.Exit(0)
-	// parse("testout.log")
-	// os.Exit(0)
-	// Test()
-	// os.Exit(0)
+func Collect(parseFsFreq int64) {
+
 	defer fmt.Println("Defferd")
 	comm := NewComm()
 	measure := NewMeasure(comm)
-	// l := NewLogger[ParquetMessage](".", 5000, 10)
+
 	l := NewDumper(".", 50000)
 	l.Start()
 	defer l.Stop()
-	// a, _ := reflector.Reflect(&message{})
-	// fmt.Println(a)
-	// os.Exit(0)
+
 	go measure.Start()
-	go trigger(comm)
+	go trigger(comm.measFS, parseFsFreq)
 	go Recieve(comm, &l)
 	done := make(chan bool, 1)
 	waitSig(done)
@@ -84,18 +77,7 @@ func Sniff() {
 	fmt.Println(b)
 }
 func main() {
-	a := NewMeasure(NewComm())
-	a2, _ := a.FS.AllProcs()
-	for _, l1 := range a2 {
-		// tmp, err := l1.IO()
-		// tmp, err := l1.Schedstat()
-		tmp, err := l1.NewStatus()
-
-		if err != nil {
-			fmt.Println(err)
-		}
-		fmt.Println(tmp)
-	}
+	flagParse()
 }
 func serialize(m message) {
 	enc := json.NewEncoder(os.Stdout)
@@ -187,13 +169,13 @@ func transform(m message) *ParquetMessage {
 	}
 	return &tmp
 }
-func trigger(c Comm) {
+func trigger(c chan bool, parseFsFreq int64) {
 	//works
 	for true {
 		fmt.Println("triggering")
 
-		time.Sleep(500 * time.Millisecond)
-		c.measFS <- true
+		time.Sleep(time.Duration(parseFsFreq) * time.Millisecond)
+		c <- true
 	}
 }
 
