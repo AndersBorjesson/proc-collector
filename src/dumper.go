@@ -70,7 +70,10 @@ func (d *Dumper) AddLog(data *ParquetMessage) {
 }
 
 func (d *Dumper) GetLog(template interface{}) {
-	memdump.Decode(&d.buffer, template)
+	err := memdump.Decode(&d.buffer, template)
+	if err != nil {
+		log.Fatalln("GetLog failing :", err)
+	}
 
 }
 

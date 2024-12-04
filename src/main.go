@@ -24,8 +24,8 @@ func Collect(collectProcFsFreq int64, collectNetFreq int64) {
 	l.Start()
 	defer l.Stop()
 
-	go trigger(comm.measFS, collectProcFsFreq)
-	go trigger(comm.measNet, collectNetFreq)
+	go trigger(comm.measFS, collectProcFsFreq, false, "procfs")
+	go trigger(comm.measNet, collectNetFreq, false, "network")
 	go Recieve(comm, &l)
 	done := make(chan bool, 1)
 	waitSig(done)
@@ -60,7 +60,7 @@ func Recieve(c Comm, l *Dumper) {
 func transform(m message) *ParquetMessage {
 	switch m.Type {
 	case 1:
-		tmp := ParquetMessage{Type: m.Type, Time: m.Time,
+		tmp := ParquetMessage{Type: m.Type, Time: m.Time, RefTime: m.RefTime,
 			ProcStat: ProcStat{
 				PID:                 m.ProcStat.PID,
 				Comm:                m.ProcStat.Comm,
@@ -134,18 +134,32 @@ func transform(m message) *ParquetMessage {
 		}
 		return &tmp
 	case 2:
-		tmp := ParquetMessage{Type: m.Type, Time: m.Time,
+		tmp := ParquetMessage{Type: m.Type, Time: m.Time, RefTime: m.RefTime,
 			ConnectionData: m.ConnectionData}
+		return &tmp
+
+	case 3:
+		tmp := ParquetMessage{Type: m.Type, Time: m.Time, RefTime: m.RefTime,
+			ConnectionInfo: ConnectionInfo{
+				TotalConnections:     m.ConnectionInfo.TotalConnections,
+				TotalDownloadBytes:   m.ConnectionInfo.TotalDownloadBytes,
+				TotalUploadBytes:     m.ConnectionInfo.TotalUploadBytes,
+				TotalDownloadPackets: m.ConnectionInfo.TotalDownloadPackets,
+				TotalUploadPackets:   m.ConnectionInfo.TotalUploadPackets,
+			}}
 		return &tmp
 	}
 	return nil
 }
 
-func trigger(c chan bool, Freq int64) {
+func trigger(c chan bool, Freq int64, verbose bool, name string) {
 	//works
 	for true {
 		time.Sleep(time.Duration(Freq) * time.Millisecond)
 		c <- true
+		if verbose {
+			log.Println("Triggered sampling of ", name)
+		}
 	}
 }
 

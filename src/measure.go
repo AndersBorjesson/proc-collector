@@ -57,10 +57,12 @@ func (s *Measure) Start() {
 	for true {
 		<-s.comm.measFS
 		a, _ := s.FS.AllProcs()
+		refTime := time.Now().UnixMilli()
 		for _, l1 := range a {
 
 			datagram := message{Type: 1,
 				Time:          time.Now().UnixMilli(),
+				RefTime:       refTime,
 				ProcStat:      PStat(l1),
 				ProcStatus:    PS(l1),
 				ProcIO:        PIO(l1),

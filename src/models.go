@@ -8,11 +8,13 @@ import (
 type message struct {
 	Type           int
 	Time           int64
+	RefTime        int64
 	ProcStat       procfs.ProcStat
 	ProcStatus     procfs.ProcStatus
 	ProcIO         procfs.ProcIO
 	ProcSchedstat  procfs.ProcSchedstat
 	ConnectionData snifferlib.ConnectionData
+	ConnectionInfo ConnectionInfo
 }
 type Comm struct {
 	measFS   chan bool
@@ -29,13 +31,22 @@ func NewComm() Comm {
 type ParquetMessage struct {
 	Type           int                       `parquet:"name=type, type=INT32"`
 	Time           int64                     `parquet:"name=time, type=INT64"`
+	RefTime        int64                     `parquet:"name=reftime, type=INT64"`
 	ProcStat       ProcStat                  `parquet:"name=procstat, type=STRUCT"`
 	ProcIO         ProcIO                    `parquet:"name=procio, type=STRUCT"`
 	ProcStatus     ProcStatus                `parquet:"name=procstatus, type=STRUCT"`
 	ProcSchedstat  ProcSchedstat             `parquet:"name=procschedstat, type=STRUCT"`
 	ConnectionData snifferlib.ConnectionData `parquet:"name=connectiondata, type=STRUCT"`
+	ConnectionInfo ConnectionInfo
 }
 
+type ConnectionInfo struct {
+	TotalConnections     int
+	TotalDownloadBytes   int
+	TotalUploadBytes     int
+	TotalDownloadPackets int
+	TotalUploadPackets   int
+}
 type ProcStat struct {
 	PID                 int    `parquet:"name=pid, type=INT32"`
 	Comm                string `parquet:"name=comm, type=BYTE_ARRAY, convertedtype=UTF8, encoding=PLAIN_DICTIONARY"`
