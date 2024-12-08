@@ -15,11 +15,12 @@ type Dumper struct {
 	buffer    bytes.Buffer
 	logDir    string
 	bufferlen int
+	currlen   int
 	file      *os.File
 	rfile     *os.File
 	rreader   *bufio.Reader
 	filepath  string
-	data      []ParquetMessage
+	data      PL
 }
 
 func NewDumper(logdir string, bufferlen int) Dumper {
@@ -39,8 +40,9 @@ func NewDumper(logdir string, bufferlen int) Dumper {
 		logDir:    logdir,
 		bufferlen: bufferlen,
 		file:      file,
+		currlen:   0,
 		filepath:  filepath,
-		data:      make([]ParquetMessage, 0),
+		data:      NewPL(bufferlen),
 	}
 
 }
@@ -58,16 +60,23 @@ func NewDumperFromFile(logfile string) Dumper {
 
 func (d *Dumper) Size() {
 }
-func (d *Dumper) AddLog(data *ParquetMessage) {
+func (d *Dumper) AddLog(data *message) {
 	// memdump.Encode(&d.buffer, data)
-	d.data = append(d.data, *data)
-	if len(d.data) > d.bufferlen {
+	AddData(*data, &d.data)
+	d.currlen++
+	if (d.currlen)%1000 == 0 {
+		log.Println("Buffer length is ", d.currlen)
+	}
+	if d.currlen > d.bufferlen {
 		d.Flush()
 	}
 }
 
 func (d *Dumper) GetLog(template interface{}) {
-	memdump.Decode(&d.buffer, template)
+	err := memdump.Decode(&d.buffer, template)
+	if err != nil {
+		log.Fatalln("GetLog failing :", err)
+	}
 
 }
 
@@ -90,7 +99,8 @@ func (s *Dumper) Flush() {
 	}
 	s.file = file
 	s.buffer.Reset()
-	s.data = make([]ParquetMessage, 0)
+	s.data = NewPL(s.bufferlen)
+	s.currlen = 0
 }
 func (s *Dumper) Stop() {
 	fmt.Println("stopping")

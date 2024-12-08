@@ -26,12 +26,12 @@ func listFiles(folder string) []string {
 	return memdumps
 }
 
-func ConvertMemdump2Json() {
-	memdumps := listFiles(".")
+func ConvertMemdump2Json(path string) {
+	memdumps := listFiles(path)
 	for _, memdump := range memdumps {
 		Dumper := NewDumperFromFile(memdump)
 		defer Dumper.Close()
-		decoded1 := make([]ParquetMessage, 0)
+		decoded1 := NewPL(50000)
 		decoded := &decoded1
 		Dumper.GetFromFile(&decoded)
 		rfile, err := os.Create(memdump + ".json")

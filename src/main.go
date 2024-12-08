@@ -8,95 +8,36 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
-
-	"github.com/AndersBorjesson/snifferlib"
-	"github.com/prometheus/procfs"
 )
 
-// func Test() {
-// 	nf, err := netflow.New(
-// 		netflow.WithCaptureTimeout(5 * time.Second),
-// 	)
-// 	if err != nil {
-// 		panic(err)
-// 	}
+func Collect(collectProcFsFreq int64, collectNetFreq int64, bufferlen int) {
 
-// 	err = nf.Start()
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	defer nf.Stop()
-
-// 	<-nf.Done()
-
-// 	var (
-// 		limit     = 50
-// 		recentSec = 5
-// 	)
-
-// 	rank, err := nf.GetProcessRank(limit, recentSec)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-
-// 	bs, err := json.MarshalIndent(rank, "", "    ")
-// 	if err != nil {
-// 		panic(err)
-// 	}
-
-// 	fmt.Println(string(bs))
-
-// }
-
-func Collect() {
-	// ConvertMemdump2Json()
-	// os.Exit(0)
-	// parse("testout.log")
-	// os.Exit(0)
-	// Test()
-	// os.Exit(0)
-	defer fmt.Println("Defferd")
 	comm := NewComm()
 	measure := NewMeasure(comm)
-	// l := NewLogger[ParquetMessage](".", 5000, 10)
+	go measure.Start()
+
+	sniffer := NewSniffer(comm)
+	go sniffer.Start()
+	defer sniffer.Close()
+
 	l := NewDumper(".", 50000)
 	l.Start()
 	defer l.Stop()
-	// a, _ := reflector.Reflect(&message{})
-	// fmt.Println(a)
-	// os.Exit(0)
-	go measure.Start()
-	go trigger(comm)
+
+	go trigger(comm.measFS, collectProcFsFreq, false, "procfs")
+	go trigger(comm.measNet, collectNetFreq, false, "network")
 	go Recieve(comm, &l)
 	done := make(chan bool, 1)
 	waitSig(done)
 	<-done
 }
 
-func Sniff() {
-	A := snifferlib.NewSnifferLib()
-	defer A.Close()
-	b := A.GetStats()
-	fmt.Println(b)
-	// Collect()
-	time.Sleep(2 * time.Second)
-	b = A.GetStats()
-	fmt.Println(b)
-}
 func main() {
-	a := NewMeasure(NewComm())
-	a2, _ := a.FS.AllProcs()
-	for _, l1 := range a2 {
-		// tmp, err := l1.IO()
-		// tmp, err := l1.Schedstat()
-		tmp, err := l1.NewStatus()
 
-		if err != nil {
-			fmt.Println(err)
-		}
-		fmt.Println(tmp)
-	}
+	flagParse()
+
 }
+
 func serialize(m message) {
 	enc := json.NewEncoder(os.Stdout)
 	err := enc.Encode(m)
@@ -111,89 +52,114 @@ func Recieve(c Comm, l *Dumper) {
 
 	for true {
 		a := <-c.datagram
-		// fmt.Println(a.Type, a.Time)
-		// fmt.Println(a.ProcStat)
-		// fmt.Println("Recieved")
-		(*l).AddLog(transform(a))
-		// transform(a)
+
+		(*l).AddLog(&a)
 	}
-}
-
-type ParquetMessage struct {
-	Type     int      `parquet:"name=type, type=INT32"`
-	Time     int64    `parquet:"name=time, type=INT64"`
-	ProcStat ProcStat `parquet:"name=procstat, type=STRUCT"`
-}
-
-type ProcStat struct {
-	PID                 int    `parquet:"name=pid, type=INT32"`
-	Comm                string `parquet:"name=comm, type=BYTE_ARRAY, convertedtype=UTF8, encoding=PLAIN_DICTIONARY"`
-	State               string `parquet:"name=state, type=BYTE_ARRAY, convertedtype=UTF8, encoding=PLAIN_DICTIONARY"`
-	Session             int    `parquet:"name=session, type=INT32"`
-	Flags               uint   `parquet:"name=flags, type=INT32, convertedtype=UINT_32"`
-	MinFlt              uint   `parquet:"name=minflt, type=INT32, convertedtype=UINT_32"`
-	CMinFlt             uint   `parquet:"name=cminflt, type=INT32, convertedtype=UINT_32"`
-	MajFlt              uint   `parquet:"name=majflt, type=INT32, convertedtype=UINT_32"`
-	CMajFlt             uint   `parquet:"name=cmajflt, type=INT32, convertedtype=UINT_32"`
-	UTime               uint   `parquet:"name=utime, type=INT32, convertedtype=UINT_32"`
-	STime               uint   `parquet:"name=stime, type=INT32, convertedtype=UINT_32"`
-	CUTime              int    `parquet:"name=cutime, type=INT32"`
-	CSTime              int    `parquet:"name=cstime, type=INT32"`
-	Priority            int    `parquet:"name=priority, type=INT32"`
-	Nice                int    `parquet:"name=nice, type=INT32"`
-	NumThreads          int    `parquet:"name=numthreads, type=INT32"`
-	Starttime           uint64 `parquet:"name=starttime, type=INT64, convertedtype=UINT_64"`
-	VSize               uint   `parquet:"name=vsize, type=INT32, convertedtype=UINT_32"`
-	RSS                 int    `parquet:"name=rss, type=INT32"`
-	RSSLimit            uint64 `parquet:"name=rsslimit, type=INT64, convertedtype=UINT_64"`
-	Processor           uint   `parquet:"name=processor, type=INT32, convertedtype=UINT_32"`
-	RTPriority          uint   `parquet:"name=rtpriority, type=INT32, convertedtype=UINT_32"`
-	Policy              uint   `parquet:"name=policy, type=INT32, convertedtype=UINT_32"`
-	DelayAcctBlkIOTicks uint64 `parquet:"name=delayacctblkioticks, type=INT64, convertedtype=UINT_64"`
-	GuestTime           int    `parquet:"name=guesttime, type=INT32"`
-	CGuestTime          int    `parquet:"name=cguesttime, type=INT32"`
 }
 
 func transform(m message) *ParquetMessage {
-	tmp := ParquetMessage{Type: m.Type, Time: m.Time,
-		ProcStat: ProcStat{
-			PID:                 m.ProcStat.PID,
-			Comm:                m.ProcStat.Comm,
-			State:               m.ProcStat.State,
-			Session:             m.ProcStat.Session,
-			Flags:               m.ProcStat.Flags,
-			MinFlt:              m.ProcStat.MinFlt,
-			CMinFlt:             m.ProcStat.CMinFlt,
-			MajFlt:              m.ProcStat.MajFlt,
-			CMajFlt:             m.ProcStat.CMajFlt,
-			UTime:               m.ProcStat.UTime,
-			STime:               m.ProcStat.STime,
-			CUTime:              m.ProcStat.CUTime,
-			CSTime:              m.ProcStat.CSTime,
-			Priority:            m.ProcStat.Priority,
-			Nice:                m.ProcStat.Nice,
-			NumThreads:          m.ProcStat.NumThreads,
-			Starttime:           m.ProcStat.Starttime,
-			VSize:               m.ProcStat.VSize,
-			RSS:                 m.ProcStat.RSS,
-			RSSLimit:            m.ProcStat.RSSLimit,
-			Processor:           m.ProcStat.Processor,
-			RTPriority:          m.ProcStat.RTPriority,
-			Policy:              m.ProcStat.Policy,
-			DelayAcctBlkIOTicks: m.ProcStat.DelayAcctBlkIOTicks,
-			GuestTime:           m.ProcStat.GuestTime,
-			CGuestTime:          m.ProcStat.CGuestTime,
-		},
+	switch m.Type {
+	case 1:
+		tmp := ParquetMessage{Type: m.Type, Time: m.Time, RefTime: m.RefTime,
+			ProcStat: ProcStat{
+				PID:                 m.ProcStat.PID,
+				Comm:                m.ProcStat.Comm,
+				State:               m.ProcStat.State,
+				Session:             m.ProcStat.Session,
+				Flags:               m.ProcStat.Flags,
+				MinFlt:              m.ProcStat.MinFlt,
+				CMinFlt:             m.ProcStat.CMinFlt,
+				MajFlt:              m.ProcStat.MajFlt,
+				CMajFlt:             m.ProcStat.CMajFlt,
+				UTime:               m.ProcStat.UTime,
+				STime:               m.ProcStat.STime,
+				CUTime:              m.ProcStat.CUTime,
+				CSTime:              m.ProcStat.CSTime,
+				Priority:            m.ProcStat.Priority,
+				Nice:                m.ProcStat.Nice,
+				NumThreads:          m.ProcStat.NumThreads,
+				Starttime:           m.ProcStat.Starttime,
+				VSize:               m.ProcStat.VSize,
+				RSS:                 m.ProcStat.RSS,
+				RSSLimit:            m.ProcStat.RSSLimit,
+				Processor:           m.ProcStat.Processor,
+				RTPriority:          m.ProcStat.RTPriority,
+				Policy:              m.ProcStat.Policy,
+				DelayAcctBlkIOTicks: m.ProcStat.DelayAcctBlkIOTicks,
+				GuestTime:           m.ProcStat.GuestTime,
+				CGuestTime:          m.ProcStat.CGuestTime,
+			},
+			ProcStatus: ProcStatus{
+				PID:                      m.ProcStatus.PID,
+				Name:                     m.ProcStatus.Name,
+				TGID:                     m.ProcStatus.TGID,
+				NSpids:                   m.ProcStatus.NSpids,
+				VmPeak:                   m.ProcStatus.VmPeak,
+				VmSize:                   m.ProcStatus.VmSize,
+				VmLck:                    m.ProcStatus.VmLck,
+				VmPin:                    m.ProcStatus.VmPin,
+				VmHWM:                    m.ProcStatus.VmHWM,
+				VmRSS:                    m.ProcStatus.VmRSS,
+				RssAnon:                  m.ProcStatus.RssAnon,
+				RssFile:                  m.ProcStatus.RssFile,
+				RssShmem:                 m.ProcStatus.RssShmem,
+				VmData:                   m.ProcStatus.VmData,
+				VmStk:                    m.ProcStatus.VmStk,
+				VmExe:                    m.ProcStatus.VmExe,
+				VmLib:                    m.ProcStatus.VmLib,
+				VmPTE:                    m.ProcStatus.VmPTE,
+				VmPMD:                    m.ProcStatus.VmPMD,
+				VmSwap:                   m.ProcStatus.VmSwap,
+				HugetlbPages:             m.ProcStatus.HugetlbPages,
+				VoluntaryCtxtSwitches:    m.ProcStatus.VoluntaryCtxtSwitches,
+				NonVoluntaryCtxtSwitches: m.ProcStatus.NonVoluntaryCtxtSwitches,
+				UIDs:                     m.ProcStatus.UIDs,
+				GIDs:                     m.ProcStatus.GIDs,
+				CpusAllowedList:          m.ProcStatus.CpusAllowedList,
+			},
+			ProcIO: ProcIO{
+				RChar:               m.ProcIO.RChar,
+				WChar:               m.ProcIO.WChar,
+				SyscR:               m.ProcIO.SyscR,
+				SyscW:               m.ProcIO.SyscW,
+				ReadBytes:           m.ProcIO.ReadBytes,
+				WriteBytes:          m.ProcIO.WriteBytes,
+				CancelledWriteBytes: m.ProcIO.CancelledWriteBytes,
+			},
+			ProcSchedstat: ProcSchedstat{
+				RunningNanoseconds: m.ProcSchedstat.RunningNanoseconds,
+				WaitingNanoseconds: m.ProcSchedstat.WaitingNanoseconds,
+				RunTimeslices:      m.ProcSchedstat.RunTimeslices,
+			},
+		}
+		return &tmp
+	case 2:
+		tmp := ParquetMessage{Type: m.Type, Time: m.Time, RefTime: m.RefTime,
+			ConnectionData: m.ConnectionData}
+		return &tmp
+
+	case 3:
+		tmp := ParquetMessage{Type: m.Type, Time: m.Time, RefTime: m.RefTime,
+			ConnectionInfo: ConnectionInfo{
+				TotalConnections:     m.ConnectionInfo.TotalConnections,
+				TotalDownloadBytes:   m.ConnectionInfo.TotalDownloadBytes,
+				TotalUploadBytes:     m.ConnectionInfo.TotalUploadBytes,
+				TotalDownloadPackets: m.ConnectionInfo.TotalDownloadPackets,
+				TotalUploadPackets:   m.ConnectionInfo.TotalUploadPackets,
+			}}
+		return &tmp
 	}
-	return &tmp
+	return nil
 }
-func trigger(c Comm) {
+
+func trigger(c chan bool, Freq int64, verbose bool, name string) {
 	//works
 	for true {
-		fmt.Println("triggering")
-
-		time.Sleep(500 * time.Millisecond)
-		c.measFS <- true
+		time.Sleep(time.Duration(Freq) * time.Millisecond)
+		c <- true
+		if verbose {
+			log.Println("Triggered sampling of ", name)
+		}
 	}
 }
 
@@ -209,33 +175,4 @@ func waitSig(done chan bool) {
 		fmt.Println(sig)
 		done <- true
 	}()
-}
-
-type Measure struct {
-	FS   procfs.FS
-	comm Comm
-}
-
-func NewMeasure(c Comm) Measure {
-	FS, err := procfs.NewDefaultFS()
-	if err != nil {
-		fmt.Println(err)
-	}
-	return Measure{FS: FS,
-		comm: c}
-}
-
-func (s *Measure) Start() {
-	for true {
-		<-s.comm.measFS
-		a, _ := s.FS.AllProcs()
-		for _, l1 := range a {
-			tmp, _ := l1.Stat()
-			datagram := message{Type: 1,
-				Time:     time.Now().UnixMilli(),
-				ProcStat: tmp}
-			s.comm.datagram <- datagram
-
-		}
-	}
 }

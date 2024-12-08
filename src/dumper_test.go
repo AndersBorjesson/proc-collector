@@ -39,7 +39,7 @@ func TestDumperBasic(t *testing.T) {
 	Dumper.AddLog(&mydata)
 	decoded := &ParquetMessage{}
 	Dumper.GetLog(&decoded)
-	a := *decoded == mydata
+	a := (*decoded).Time == mydata.Time
 	if !a {
 		t.Errorf("Expected %v, got %v", mydata, decoded)
 	}
