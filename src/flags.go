@@ -13,6 +13,7 @@ func flagParse() {
 	collectCmd := flag.NewFlagSet("collect", flag.ExitOnError)
 	collectProcFsFreq := collectCmd.Int64("pfdelay", 1000, "delay between procfs reads in milliseconds")
 	collectProcFsNet := collectCmd.Int64("netdelay", 1000, "delay between network reads in milliseconds")
+	collectBufLen := collectCmd.Int("bufflen", 50000, "buffer length for the dumper")
 	if len(os.Args) < 2 {
 		fmt.Println("expected subcommand")
 		os.Exit(1)
@@ -27,7 +28,7 @@ func flagParse() {
 		ConvertMemdump2Json(path)
 	case "collect":
 		collectCmd.Parse(os.Args[2:])
-		Collect(*collectProcFsFreq, *collectProcFsNet)
+		Collect(*collectProcFsFreq, *collectProcFsNet, *collectBufLen)
 
 	}
 }

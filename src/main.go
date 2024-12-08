@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func Collect(collectProcFsFreq int64, collectNetFreq int64) {
+func Collect(collectProcFsFreq int64, collectNetFreq int64, bufferlen int) {
 
 	comm := NewComm()
 	measure := NewMeasure(comm)
@@ -53,7 +53,7 @@ func Recieve(c Comm, l *Dumper) {
 	for true {
 		a := <-c.datagram
 
-		(*l).AddLog(transform(a))
+		(*l).AddLog(&a)
 	}
 }
 

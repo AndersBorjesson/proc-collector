@@ -31,7 +31,7 @@ func ConvertMemdump2Json(path string) {
 	for _, memdump := range memdumps {
 		Dumper := NewDumperFromFile(memdump)
 		defer Dumper.Close()
-		decoded1 := make([]ParquetMessage, 0)
+		decoded1 := NewPL(50000)
 		decoded := &decoded1
 		Dumper.GetFromFile(&decoded)
 		rfile, err := os.Create(memdump + ".json")
