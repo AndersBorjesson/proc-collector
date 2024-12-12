@@ -1,16 +1,16 @@
-CGO_ENABLED=1 GOOS=android GOARCH=arm64 CC_FOR_TARGET=/home/aborjes3/Downloads/android-ndk-r27c/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android35-clang go build .
+
+build-native:
+	go build .
+
+build-android-arm:
+	bash build_android_arm.sh
 
 
-GOOS=android GOARCH=arm64 CGO_ENABLED=1 CC_FOR_TARGET=/home/aborjes3/Downloads/android-ndk-r27c/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android35-clang CGO_CFLAGS="--sysroot=/home/aborjes3/Downloads/android-ndk-r27c/toolchains/llvm/prebuilt/linux-x86_64/sysroot" go build
+build-android-arm64:
+	bash build_android_arm64.sh
 
+build-libpcap-arm:
+	bash build_libpcap_arm.sh
 
-CGO_ENABLED=1 GOOS=android GOARCH=arm64 CC=/home/aborjes3/Downloads/android-ndk-r27c/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android35-clang go build .
-
-CGO_LDFLAGS
-
-
-GOOS=android GOARCH=arm64 CGO_ENABLED=1 CC_FOR_TARGET=/home/aborjes3/Downloads/android-ndk-r27c/toolchains/llvm/prebuilt/linux-x86_64/bin/x86_64-linux-android35-clang CGO_CFLAGS="--sysroot=/home/aborjes3/Downloads/android-ndk-r27c/toolchains/llvm/prebuilt/linux-x86_64/sysroot"   CGO_LDFLAGS="--sysroot=/home/aborjes3/Downloads/android-ndk-r27c/toolchains/llvm/prebuilt/linux-x86_64/sysroot"  go build
-
-
-
-CGO_ENABLED=1 GOOS=linux GOARCH=arm  go build .
+build-libpcap-arm64:
+	bash build_libpcap_arm64.sh
